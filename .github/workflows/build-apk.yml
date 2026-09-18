@@ -15,19 +15,21 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
-          java-version: '11' # Lowered from 17 to match the older codebase requirements
+          java-version: '11'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
       - name: Grant Execute Permission to Gradle Wrapper
-        run: chmod +x gradlew
+        run: chmod +x android/gradlew
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: |
+          cd android
+          ./gradlew assembleDebug --stacktrace
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: bplog-app-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
